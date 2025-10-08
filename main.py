@@ -11,6 +11,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from pathlib import Path
 import platform
 import tkinter as tk
 from tkinter import ttk
@@ -115,9 +116,9 @@ def show_window():
     with open('deviceConfig.json', 'r') as f:
         dev_info = json.load(f)
 
-    # texture, width, height = image.load('examples/quilt_preview_result.png')
-    texture, width, height = image.load('examples/out1.png')
-    # texture, width, height = image.load('examples/USA_Baby_quilt_cv2.png')
+    # texture, width, height = image.load(Path('examples') / 'quilt_preview_result.png')
+    texture, width, height = image.load(Path('examples') / 'out1.png')
+    # texture, width, height = image.load(Path('examples') / 'USA_Baby_quilt_cv2.png')
 
 
     glframe = SwizzleFrame(child)
