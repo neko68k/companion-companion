@@ -122,7 +122,10 @@ def show_window():
 
 
     glframe = SwizzleFrame(child)
-    glframe.SetShaderParams(dev_info['config']['obliquity'], dev_info['config']['lineNumber'], dev_info['config']['deviation'])
+    glframe.SetShaderParams(dev_info['config']['obliquity'], 
+                            dev_info['config']['lineNumber'], 
+                            dev_info['config']['deviation'],
+                            0.2)
     glframe.SetImage(texture, width, height)
     glframe.animate = 1
     glframe.pack(fill="both", expand=True)

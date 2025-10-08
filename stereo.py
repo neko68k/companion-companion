@@ -198,8 +198,7 @@ class SwizzleFrame(OpenGLFrame):
         GL.glUniform1f(self.UNIFORMS['ImgsCountAll'], self.ImgsCountAll)
         GL.glUniform1f(self.UNIFORMS['ImgsCountX'], self.ImgsCountX)
         GL.glUniform1f(self.UNIFORMS['ImgsCountY'], self.ImgsCountY)
-        # GL.glUniform1f(self.UNIFORMS['gamma'], 0.35)
-        GL.glUniform1f(self.UNIFORMS['gamma'], 0.2)
+        GL.glUniform1f(self.UNIFORMS['gamma'], self.gamma)
 
         GL.glActiveTexture(GL.GL_TEXTURE0)
         GL.glBindTexture(GL.GL_TEXTURE_2D, self.texture_id)        
@@ -211,16 +210,16 @@ class SwizzleFrame(OpenGLFrame):
         GL.glBindVertexArray(0)
         GL.glUseProgram(0)
 
-    def SetShaderParams(self, obliquity, linenumber, deviation):
+    def SetShaderParams(self, obliquity, linenumber, deviation, gamma):
         self.obliquity = obliquity
         self.linenumber = linenumber
         self.deviation = deviation
+        self.gamma = gamma
 
     def SetImage(self, image, width, height):    
         self.image = image
         self.texwidth = width
         self.texheight = height
-        
 
             
         return
