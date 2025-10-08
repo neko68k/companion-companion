@@ -11,6 +11,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import platform
 import tkinter as tk
 from tkinter import ttk
 from screeninfo import get_monitors
@@ -98,11 +99,15 @@ def show_window():
     child = tk.Toplevel(root)
     child.title("Child Window")
     child.transient(root) 
-    # fullscreen windowed for Windows because this shit is honestly as fucked up as possible for like 2 decades now
     child.geometry(glwindow_geom) # Position relative to screen
-    child.attributes('-fullscreen', True)
-#    child.overrideredirect(True)
-#    child.state('zoomed')
+    
+    if(platform.system() == "Windows"):
+        # fullscreen windowed for Windows because this shit is honestly as fucked up as possible for like 2 decades now
+        child.overrideredirect(True)
+        child.state('zoomed')
+    else:
+        child.attributes('-fullscreen', True)
+
     child.focus_force()
 
     child.bind('<Escape>', close_window)
