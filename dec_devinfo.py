@@ -66,7 +66,7 @@ def DevInfo():
     #else:
     #    raise FileNotFoundError(f"deviceConfig.json not found in paths:\n{openstage_path}\n{cubestage_path}")
 
-    config_path = 'deviceConfig.json'
+    config_path = 'deviceConfig_2.json'
     print(config_path)
 
 
@@ -77,9 +77,9 @@ def DevInfo():
     password = keycode.encode()
     config = decrypt(cyphertext, password)
 
-    with open('deviceConfig.json', 'w+') as file:
+    with open('deviceConfig_2.json', 'w+') as file:
         json.dump(config, file, indent=4)
 
     return
 
-
+DevInfo()

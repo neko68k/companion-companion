@@ -46,6 +46,46 @@ def close_window(event):
     child.destroy()
     root.destroy()
 
+def sub_window(glwindow_geom, which, gamma):
+    child = tk.Toplevel(root)
+    child.title("Child Window")
+    child.transient(root) 
+    child.geometry(glwindow_geom) # Position relative to screen
+    
+    if(platform.system() == "Windows"):
+        # fullscreen windowed for Windows because this shit is honestly as fucked up as possible for like 2 decades now
+        child.overrideredirect(True)
+        child.state('zoomed')
+    else:
+        child.attributes('-fullscreen', True)
+
+    child.focus_force()
+
+    child.bind('<Escape>', close_window)
+
+    if(which == 1):
+        with open('deviceConfig.json', 'r') as f:
+            dev_info = json.load(f)
+        texture, width, height = image.load(Path('examples') / 'out1.png')
+        
+    else:
+        with open('deviceConfig_2.json', 'r') as f:
+            dev_info = json.load(f)
+        texture, width, height = image.load(Path('examples') / 'USA_Baby_quilt_cv2.png')
+        
+
+    # texture, width, height = image.load(Path('examples') / 'quilt_preview_result.png')
+
+
+    glframe = SwizzleFrame(child)
+    glframe.SetShaderParams(dev_info['config']['obliquity'], 
+                            dev_info['config']['lineNumber'], 
+                            dev_info['config']['deviation'],
+                            gamma)
+    glframe.SetImage(texture, width, height)
+    glframe.animate = 1
+    glframe.pack(fill="both", expand=True)
+
 def show_window():
     global root
     global child
@@ -90,45 +130,21 @@ def show_window():
     m_y = 0
 
     for m in get_monitors():
-        if(m.width == 1440 and m.height == 2560):
+        # if(m.width == 1440 and m.height == 2560):
+        if(m.name == "HDMI-1"):
             print(m)
             glwindow_geom = f'{m.width}x{m.height}+{m.x}+{m.y}'
             m_x = m.width
             m_y = m.height
-            break
 
-    child = tk.Toplevel(root)
-    child.title("Child Window")
-    child.transient(root) 
-    child.geometry(glwindow_geom) # Position relative to screen
-    
-    if(platform.system() == "Windows"):
-        # fullscreen windowed for Windows because this shit is honestly as fucked up as possible for like 2 decades now
-        child.overrideredirect(True)
-        child.state('zoomed')
-    else:
-        child.attributes('-fullscreen', True)
+            sub_window(glwindow_geom, 1, 0.2)
 
-    child.focus_force()
+            
+        else:
+            glwindow_geom = f'{m.width}x{m.height}+{m.x}+{m.y}'
 
-    child.bind('<Escape>', close_window)
+            sub_window(glwindow_geom, 2, 0.3)
 
-    with open('deviceConfig.json', 'r') as f:
-        dev_info = json.load(f)
-
-    # texture, width, height = image.load(Path('examples') / 'quilt_preview_result.png')
-    texture, width, height = image.load(Path('examples') / 'out1.png')
-    # texture, width, height = image.load(Path('examples') / 'USA_Baby_quilt_cv2.png')
-
-
-    glframe = SwizzleFrame(child)
-    glframe.SetShaderParams(dev_info['config']['obliquity'], 
-                            dev_info['config']['lineNumber'], 
-                            dev_info['config']['deviation'],
-                            0.2)
-    glframe.SetImage(texture, width, height)
-    glframe.animate = 1
-    glframe.pack(fill="both", expand=True)
 
     pyautogui.FAILSAFE = False
     pyautogui.moveTo(m_x, m_y)
